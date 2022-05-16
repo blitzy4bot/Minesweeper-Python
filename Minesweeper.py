@@ -1,9 +1,6 @@
 import random
 
 
-active = True
-
-
 class Minesweeper:
 
     def __init__(self, x, y, tries):
