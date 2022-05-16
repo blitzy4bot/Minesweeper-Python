@@ -1,6 +1,9 @@
 import random
 
 
+active = True
+
+
 class Minesweeper:
 
     def __init__(self, x, y, tries):
@@ -16,6 +19,7 @@ class Minesweeper:
         self.list2 = []
         self.listFinal = []
         self.listFinalViewable = []
+        self.active = True
 
     def create_field(self):
         for i in range(self.x):
@@ -107,7 +111,7 @@ class Minesweeper:
                 print("\n")
                 print("Out of bounds!")
         else:
-            print("No tries left!")
+            print("No tries left! game ended")
             self.result()
             self.gameOver()
         self.checkViewableBoard()
@@ -127,7 +131,7 @@ class Minesweeper:
         print("You missed")
 
     def allowed(self):
-        return self.tries > 0 and self.triesNeeded <= self.x*self.y
+        return self.tries > 0 and self.triesNeeded < self.x*self.y
 
     def getTriesLeft(self):
         print(f"Tries left {self.tries}")
@@ -156,48 +160,65 @@ class Minesweeper:
         del self.listFinalViewable
     
     def result(self):
-        print(f"Count tries: {self.triesNeeded} | Hits: {self.hits} | Misses: {self.misses}")
+        print(f"Tries: {self.triesNeeded} | Hits: {self.hits} | Misses: {self.misses}")
 
-
-
-if __name__ == '__main__':
+def starter():
     while True:
         initialized = True
         run_user_prompt = True
         while initialized:
-            size_x = int(input("Size of X [1-9]: "))
-            size_y = int(input("Size of y [1-9]: "))
-            tries = int(input("How many tries do you want to have? >> "))
-            print("\n")
-            mineSweeper1 = Minesweeper(size_x, size_y, tries)
-            mineSweeper1.create_field()
-            mineSweeper1.insert_random()
-            mineSweeper1.initViewableBoard()
-            mineSweeper1.set_ammount_mines()
-            while run_user_prompt:
-                input1 = input("[0]Seek - [1]Show board - [2]Get tries left - [3]Get status - [4]Give yourself more tries - [5]Get ammount of mines left - [6]Restart\n")
+            try:
+                size_x = int(input("Size of X [1-10]: "))
+                size_y = int(input("Size of y [1-10]: "))
+                tries = int(input("How many tries do you want to have? >> "))
+            except ValueError:
+                print("Invalid input!")
+            if size_x <= 10 and size_y <= 10 and tries <= 100 and size_x >= 1 and size_y >= 1 and tries >= 1:
                 print("\n")
-                if input1 == "0":
-                    input2 = int(input("X: "))
-                    input3 = int(input("Y: "))
-                    mineSweeper1.seek(input2, input3)
+                mineSweeper1 = Minesweeper(size_x, size_y, tries)
+                mineSweeper1.create_field()
+                mineSweeper1.insert_random()
+                mineSweeper1.initViewableBoard()
+                mineSweeper1.set_ammount_mines()
+                while run_user_prompt:
+                    input1 = input("[0]Seek - [1]Show board - [2]Get tries left - [3]Get status - [4]Give yourself more tries - [5]Get ammount of mines left - [6]Restart\n")
                     print("\n")
-                if input1 == "1":
-                    mineSweeper1.checkViewableBoard()
-                    print("\n")
-                if input1 == "2":
-                    mineSweeper1.getTriesLeft()
-                    print("\n")
-                if input1 == "3":
-                    mineSweeper1.result()
-                    print("\n")
-                if input1 == "4":
-                    input2 = int(input("Ammount of tries to add [1-1000]: "))
-                    mineSweeper1.addTries(input2)
-                if input1 == "5":
-                    mineSweeper1.get_ammount_mines()
-                if input1 == "6":
-                    print("Resetting...")
-                    mineSweeper1.reset()
-                    run_user_prompt = False
-                    initialized = False
+                    if input1 == "0":
+                        try:
+                            input2 = int(input("X: "))
+                            input3 = int(input("Y: "))
+                        except ValueError:
+                            print("Invalid Input!")
+                        if input2 <= 10 and input3 <= 10 and input2 >= 1 and input3 >= 1:
+                            mineSweeper1.seek(input2, input3)
+                            print("\n")
+                    if input1 == "1":
+                        mineSweeper1.checkViewableBoard()
+                        print("\n")
+                    if input1 == "2":
+                        mineSweeper1.getTriesLeft()
+                        print("\n")
+                    if input1 == "3":
+                        mineSweeper1.result()
+                        print("\n")
+                    if input1 == "4":
+                        try:
+                            input2 = int(input("Ammount of tries to add [1-1000]: "))
+                        except ValueError:
+                            print("Invalid input!")
+                        if input2 <= 100:                
+                            mineSweeper1.addTries(input2)
+                        else:
+                            print("Invalid ammount [1-100]!")
+                    if input1 == "5":
+                        mineSweeper1.get_ammount_mines()
+                    if input1 == "6":
+                        print("Resetting...")
+                        mineSweeper1.reset()
+                        run_user_prompt = False
+                        initialized = False
+            else:
+                print("Invalid sizes!")
+
+if __name__ == '__main__':
+    starter()
