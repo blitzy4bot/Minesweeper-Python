@@ -92,7 +92,7 @@ class Minesweeper:
     
     def seek(self, x, y):
         if self.allowed():
-            if not self.x < x and not self.y < y:
+            if not self.x < x or not self.y < y:
                 if self.listFinalViewable[x-1][y-1] == "*":
                     self.triesNeeded += 1
                     if self.listFinal[x-1][y-1] ==  "+":
