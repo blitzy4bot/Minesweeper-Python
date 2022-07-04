@@ -182,8 +182,8 @@ def starter():
                     print("\n")
                     if input1 == "0":
                         try:
-                            input2 = int(input("X: "))
-                            input3 = int(input("Y: "))
+                            input2 = int(input("Y: "))
+                            input3 = int(input("X: "))
                         except ValueError:
                             print("Invalid Input!")
                         if input2 <= 10 and input3 <= 10 and input2 >= 1 and input3 >= 1:
